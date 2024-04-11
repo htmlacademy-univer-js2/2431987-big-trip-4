@@ -1,21 +1,21 @@
 import {render} from '../render';
-import {WaypointListView, SortView, EditPointView, WaypointView} from '../view';
+import {PointListView, SortView, EditPointView, PointView} from '../view';
 
 export default class BoardPresenter {
-  waypointListView = new WaypointListView();
-  sortView = new SortView();
-
-  constructor({boardContainer}) {
-    this.boardContainer = boardContainer;
+  constructor({container, pointsModel }) {
+    this.container = container;
+    this.pointsModel = pointsModel;
   }
 
   init() {
-    render(this.sortView, this.boardContainer);
-    render(this.waypointListView, this.boardContainer);
-    render(new EditPointView(), this.waypointListView.getElement());
+    this.points = [...this.pointsModel.getPoints()];
+    this.itemsOfList = [new EditPointView({ point: this.points[0], offersOfThisType: this.pointsModel.offersModel.getOffersByType(this.points[0].type) }).getTemplate()];
 
-    for (let i = 0; i < 3; i++) {
-      render(new WaypointView(), this.waypointListView.getElement());
+    for (let i = 1; i < this.points.length; i++) {
+      this.itemsOfList.push(new PointView({ point: this.points[i] }).getTemplate());
     }
+
+    render(new SortView(), this.container);
+    render(new PointListView({ items: this.itemsOfList }), this.container);
   }
 }
