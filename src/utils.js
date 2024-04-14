@@ -1,7 +1,12 @@
 import dayjs from 'dayjs';
+import {FILTER_DATA_DETECTION} from './const';
 import duration from 'dayjs/plugin/duration';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 dayjs.extend(duration);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 const MIN_IN_HOUR = 60;
 const HOUR_IN_DAY = 24;
@@ -52,4 +57,27 @@ function camelizer(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export { getRandomElement, getRandomInt, fullDate, getDuration, shortDate, humanizeHHmm, getLastWord, camelizer};
+function isFutureDate(dateFrom) {
+  return dayjs(dateFrom).isAfter(dayjs());
+}
+
+function isPastDate(dateTo) {
+  return dayjs(dateTo).isBefore(dayjs());
+}
+
+function isPresentDate(dateFrom, dateTo) {
+  const now = dayjs();
+  return now.isSameOrAfter(dateFrom) && now.isSameOrBefore(dateTo);
+}
+
+function generateFilter(points) {
+  return Object.entries(FILTER_DATA_DETECTION).map(
+    ([filterType, filterPoints]) => ({
+      type: filterType,
+      count: filterPoints(points).length,
+    }),
+  );
+}
+
+export { getRandomElement, getRandomInt, fullDate, getDuration, shortDate, humanizeHHmm, getLastWord, camelizer, generateFilter };
+export { isFutureDate, isPastDate, isPresentDate };
