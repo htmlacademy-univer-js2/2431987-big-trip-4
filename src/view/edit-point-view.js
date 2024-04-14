@@ -1,7 +1,7 @@
-import {createElement} from '../render.js';
 import dayjs from 'dayjs';
 import {POINT_TYPES, DESTINATIONS} from '../const.js';
 import {getLastWord, camelizer, fullDate} from '../utils.js';
+import AbstractView from '../framework/view/abstract-view';
 
 const BLANK_POINT = {
   type: 'flight',
@@ -89,9 +89,8 @@ function createDestinationList() {
   </datalist>`;
 }
 
-function createEditPointTemplate({point, offersOfThisType}) {
-  const {type, dateFrom, dateTo, basePrice, destination, offers} = point;
-  return `<form class="event event--edit" action="#" method="post">
+function createEditPointTemplate({type, dateFrom, dateTo, basePrice, destination, offers, offersOfThisType}) {
+  return `<li class="trip-events__item"><form class="event event--edit" action="#" method="post">
   <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -135,28 +134,26 @@ function createEditPointTemplate({point, offersOfThisType}) {
     ${createOffersSelector({offers, offersOfThisType})}
     ${createDestinationSection(destination)}
   </section>
-</form>`;
+</form></li>`;
 }
 
-export default class PointEditingFormView {
-  constructor({point = BLANK_POINT, offersOfThisType} = {}) {
+export default class EditPointView extends AbstractView{
+  constructor({point = BLANK_POINT, onFormSubmit }) {
+    super();
     this.point = point;
-    this.offersOfThisType = offersOfThisType;
+    this.onFormSubmit = onFormSubmit;
+    this.formSubmitHandler = this.formSubmitHandler.bind(this);
+
+    this.element.querySelector('form').addEventListener('submit', this.formSubmitHandler);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.formSubmitHandler);
   }
 
-  getTemplate() {
-    return createEditPointTemplate({point: this.point, offersOfThisType: this.offersOfThisType});
+  get template() {
+    return createEditPointTemplate(this.point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  formSubmitHandler(event) {
+    event.preventDefault();
+    this.onFormSubmit();
   }
 }

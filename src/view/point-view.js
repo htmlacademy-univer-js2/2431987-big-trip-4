@@ -1,6 +1,6 @@
-import { createElement } from '../render.js';
 import dayjs from 'dayjs';
 import { humanizeHHmm, shortDate, getDuration, camelizer } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view';
 
 function createOffers(offers) {
   return offers ? offers.map((offer) =>
@@ -11,11 +11,10 @@ function createOffers(offers) {
     </li>`).join('') : '';
 }
 
-function createPointTemplate(point) {
-  const { basePrice, dateFrom, dateTo, destination, isFavorite, type, offers } = point;
+function createPointTemplate({ basePrice, dateFrom, dateTo, destination, isFavorite, type, offers}) {
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
 
-  return `<div class="event">
+  return `<li class="trip-events__item"><div class="event">
   <time class="event__date" datetime="${dayjs(dateFrom).format('YYYY-MM-DD')}">${shortDate(dateFrom)}</time>
   <div class="event__type">
     <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
@@ -45,27 +44,25 @@ function createPointTemplate(point) {
   <button class="event__rollup-btn" type="button">
     <span class="visually-hidden">Open event</span>
   </button>
-</div>`;
+</div></li>`;
 }
 
-export default class PointView {
-  constructor({ point }) {
+export default class PointView extends AbstractView {
+  constructor({ point, onEditClick }) {
+    super();
     this.point = point;
+    this.handleEditClick = onEditClick;
+    this.editClickHandler = this.editClickHandler.bind(this);
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.editClickHandler);
   }
 
-  getTemplate() {
+  get template() {
     return createPointTemplate(this.point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.handleEditClick();
+  };
 }

@@ -1,6 +1,6 @@
 import { getRandomPoint } from '../mock/point';
 
-const POINTS_COUNT = 6;
+const POINTS_COUNT = 10;
 
 export default class PointsModel {
   constructor({ destinationModel, offersModel }) {

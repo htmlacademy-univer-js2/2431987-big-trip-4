@@ -1,5 +1,5 @@
-import {FilterView} from '../view';
-import {render} from '../render';
+import FilterView from '../view/filter-view';
+import {render} from '../framework/render';
 
 export default class FilterPresenter {
   filterView = new FilterView();
