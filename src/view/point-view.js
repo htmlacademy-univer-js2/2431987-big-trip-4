@@ -48,18 +48,27 @@ function createPointTemplate({ basePrice, dateFrom, dateTo, destination, isFavor
 }
 
 export default class PointView extends AbstractView {
-  constructor({ point, onEditClick }) {
+  constructor({ point, onEditClick, onFavoriteClick }) {
     super();
     this.point = point;
     this.handleEditClick = onEditClick;
+    this.handleFavoriteClick = onFavoriteClick;
+
     this.editClickHandler = this.editClickHandler.bind(this);
+    this.favoriteClickHandler = this.favoriteClickHandler.bind(this);
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.editClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.favoriteClickHandler);
   }
 
   get template() {
     return createPointTemplate(this.point);
   }
+
+  favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.handleFavoriteClick();
+  };
 
   editClickHandler = (evt) => {
     evt.preventDefault();
