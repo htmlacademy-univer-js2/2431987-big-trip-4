@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import {FILTER_DATA_DETECTION} from './const';
 import duration from 'dayjs/plugin/duration';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';

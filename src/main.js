@@ -1,3 +1,4 @@
+import {render} from './framework/render';
 import BoardPresenter from './presenter/board-presenter';
 import FilterPresenter from './presenter/filter-presenter';
 import InfoPresenter from './presenter/info-presenter';
@@ -6,10 +7,10 @@ import DestinationsModel from './model/destinations-model';
 import PointsModel from './model/points-model';
 import FilterModel from './model/filter-model.js';
 import NewPointButtonView from './view/new-point-button-view.js';
-import {render} from './framework/render';
 import DestinationsApi from './api/destinations-api';
 import OffersApi from './api/offers-api';
 import PointsApi from './api/points-api';
+import NewPointButtonPresenter from './presenter/new-point-button-presenter';
 
 const AUTHORIZATION = 'Basic timurdistel';
 const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
@@ -62,14 +63,20 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
+const newPointButtonPresenter = new NewPointButtonPresenter({
+  container: infoHeader,
+  component: newPointButtonComponent,
+});
+
 async function initModels() {
   await destinationsModel.init();
   await offersModel.init();
   await pointsModel.init();
-  render(newPointButtonComponent, infoHeader);
 }
+
+initModels();
 
 infoPresenter.init();
 filterPresenter.init();
 boardPresenter.init();
-initModels();
+newPointButtonPresenter.init();
