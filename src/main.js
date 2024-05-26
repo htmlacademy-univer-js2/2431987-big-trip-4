@@ -1,4 +1,3 @@
-import {render} from './framework/render';
 import BoardPresenter from './presenter/board-presenter';
 import FilterPresenter from './presenter/filter-presenter';
 import InfoPresenter from './presenter/info-presenter';
