@@ -113,7 +113,6 @@ export default class BoardPresenter {
   createPoint() {
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
-      render(this.#pointsListComponent, this.#container);
     }
     this.#creatingNewPoint = true;
     this.#sortType = SORT_TYPE.DAY;
