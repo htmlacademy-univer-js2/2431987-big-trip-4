@@ -39,7 +39,7 @@ function createEventSelector({isDisabled}) {
 function createOffersSelector({offers, currentOffers, isDisabled}) {
   function createOfferItem() {
     return currentOffers.map((item) => {
-      const checkedClassname = offers.some((curValue) => (curValue.id === item.id)) ? 'checked' : '';
+      const checkedClassname = offers.some((curValue) => (curValue === item.id)) ? 'checked' : '';
       const slug = getLastWord(item.title);
       return `
         <div class="event__offer-selector">

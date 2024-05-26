@@ -29,8 +29,12 @@ const filterModel = new FilterModel();
 const newPointButtonComponent = new NewPointButtonView({
   onClick: handleNewPointButtonClick
 });
+
 const infoPresenter = new InfoPresenter({
-  container: infoHeader
+  container: infoHeader,
+  pointsModel,
+  destinationsModel,
+  offersModel
 });
 
 const filterPresenter = new FilterPresenter({
