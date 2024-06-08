@@ -30,8 +30,6 @@ const newPointButtonComponent = new NewPointButtonView({
   onClick: handleNewPointButtonClick
 });
 
-newPointButtonComponent.element.disabled = true;
-
 const infoPresenter = new InfoPresenter({
   container: infoHeader,
   pointsModel,
@@ -64,6 +62,16 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
+const disableNewEventButton = () => {
+  setTimeout(() => {newPointButtonComponent.element.disabled = true;}, 0);
+};
+
+function handleNetworkProblems(actionType, updateType) {
+  if(updateType.isError) {
+    disableNewEventButton();
+  }
+}
+
 const newPointButtonPresenter = new NewPointButtonPresenter({
   container: infoHeader,
   component: newPointButtonComponent,
@@ -75,6 +83,8 @@ async function initModels() {
   await pointsModel.init();
   newPointButtonComponent.element.disabled = false;
 }
+
+pointsModel.addObserver(handleNetworkProblems);
 
 initModels();
 
