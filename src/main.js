@@ -50,7 +50,6 @@ const boardPresenter = new BoardPresenter({
   offersModel,
   filterModel,
   onNewPointDestroy: handleNewPointFormClose,
-  newPointButtonComponent
 });
 
 function handleNewPointFormClose() {
