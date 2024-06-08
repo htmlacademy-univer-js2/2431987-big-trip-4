@@ -30,6 +30,8 @@ const newPointButtonComponent = new NewPointButtonView({
   onClick: handleNewPointButtonClick
 });
 
+newPointButtonComponent.element.disabled = true;
+
 const infoPresenter = new InfoPresenter({
   container: infoHeader,
   pointsModel,
@@ -71,6 +73,7 @@ async function initModels() {
   await destinationsModel.init();
   await offersModel.init();
   await pointsModel.init();
+  newPointButtonComponent.element.disabled = false;
 }
 
 initModels();
